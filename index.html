@@ -4,6 +4,7 @@
 <title>Cordova</title>
 <script type="text/javascript" charset="utf-8" src="cordova-1.7.0.js"></script>
 <link rel="stylesheet" href="jquery.mobile-1.1.0.min.css" />
+<link rel="stylesheet" href="tempocamp.css"/>
 <script src="jquery-1.7.2.min.js"></script>
 <script src="jquery.mobile-1.1.0.min.js"></script>
 <script src="tempocamp.js" ></script>
@@ -45,12 +46,12 @@
 		<!-- /header -->
 
 		<div data-role="content" data-theme="a">
-			<div data-role="fieldcontain">
-				<label for="name">BPMs:</label> <input type="text" name="name"
+			<div data-role="fieldcontain" id="Music">
+				<label for="name">Playing:</label> <input type="text" name="name"
 					id="Tavg" value="" />
 			</div>
-			<div class="tapDiv" style="height: 150px; border-style: solid"
-				id="tapDiv">Touch here</div>
+			<div class="tapDiv" style="border-style: solid"
+				id="tapDiv"><div id='text'><p>Touch here</p></div></div>
 
 			<div id="nameSong"></div>
 

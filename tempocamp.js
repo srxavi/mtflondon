@@ -4,6 +4,8 @@ var msecsPrevious = 0;
 var actualBPM = 0;
 var lastBPM=0;
 var noDoing= true;
+var my_media = null;
+
 $("#tapDiv").live("tap", function(event) {
 	TapForBPM();
 });
@@ -13,6 +15,10 @@ function ResetCount() {
 	$("#Tavg").val("");
 	//document.TAP_DISPLAY.T_TAP.value = "";
 	$("#T_RESET").blur();
+    if (my_media != null) {
+        my_media.stop()
+    }
+    $("Tavg").toogle(false);
 }
 
 function TapForBPM() {
@@ -81,17 +87,16 @@ function playMusic(data) {
 	alert(JSON.stringify(data));
 	console.log(JSON.stringify(data));
 	
-	
+	$("#Music").toggle('fast');
+    $("#Tavg").val(data.response.results[0].entity.metadata.track + " by " + data.response.results[0].entity.metadata.artist);
 	console.log(JSON.stringify(data.response.results[0].entity.metadata.location));
 	playAudio(data.response.results[0].entity.metadata.location);
 
 }
-var my_media = null;
 
 function playAudio(src) {
 	// Create Media object from src
 	alert(src);
-	
 	if(my_media != null){
 		my_media.stop();
 	}else{

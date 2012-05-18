@@ -1,0 +1,13 @@
+#Music {
+    display: none;
+}
+
+#tapDiv {
+    height: 150px;
+}
+
+#text {
+    height: 150px;
+    vertical-align: middle;
+    text-align: center;
+}
