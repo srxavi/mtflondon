@@ -33,11 +33,23 @@ function TapForBPM() {
 		bpmAvg = 60000 * count / (msecs - msecsFirst);
 		$("#Tavg").val(Math.round(bpmAvg));
 		if (((Math.abs(Math.round(bpmAvg) - lastBPM)) > 15)&&(noDoing)) {
-			lastBPM=Math.round(bpmAvg);
-			actualBPM = Math.round(bpmAvg);
+			now=Math.round(bpmAvg);
+			if(now>200){
+				now=200;
+			}
+			if(now<40){
+				now=40;
+			}
+			lastBPM=now;
+			actualBPM = now;
 			getNewSong();
-		} else {
-			actualBPM = Math.round(bpmAvg);
+		} else {now=Math.round(bpmAvg);
+		if(now>200){
+			now=200;
+		}
+		if(now<40){
+			now=40;
+		}
 		}
 		count++;
 		//document.TAP_DISPLAY.T_TAP.value = count;
@@ -56,7 +68,7 @@ noDoing=false;
 		dataType : 'json',
 		type : 'GET',
 		success : function(data) {
-		alert("Hola");
+		
 			playMusic(data);
 		}
 	});
@@ -75,13 +87,20 @@ function playMusic(data) {
 
 }
 var my_media = null;
+
 function playAudio(src) {
 	// Create Media object from src
 	alert(src);
+	
+	if(my_media != null){
+		my_media.stop();
+	}else{
+	
 	my_media = new Media(src, onSuccess, onError);
 
 	// Play audio
 	my_media.play();
+	}
 }
 
 function onSuccess() {
