@@ -37,7 +37,7 @@ function TapForBPM() {
 		count = 1;
 	} else {
 		bpmAvg = 60000 * count / (msecs - msecsFirst);
-		$("#Tavg").val(Math.round(bpmAvg));
+		$("#text").html("BPMs: " + Math.round(bpmAvg));
 		if (((Math.abs(Math.round(bpmAvg) - lastBPM)) > 15)&&(noDoing)) {
 			now=Math.round(bpmAvg);
 			if(now>200){
@@ -83,8 +83,6 @@ noDoing=false;
 
 function playMusic(data) {
 	noDoing=true;
-	
-	alert(JSON.stringify(data));
 	console.log(JSON.stringify(data));
 	
 	$("#Music").toggle('fast');
@@ -96,7 +94,6 @@ function playMusic(data) {
 
 function playAudio(src) {
 	// Create Media object from src
-	alert(src);
 	if(my_media != null){
 		my_media.stop();
 	}else{
