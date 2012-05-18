@@ -2,6 +2,7 @@ var count = 0;
 var msecsFirst = 0;
 var msecsPrevious = 0;
 var actualBPM = 0;
+var lastBPM=0;
 var noDoing= true;
 $("#tapDiv").live("tap", function(event) {
 	TapForBPM();
@@ -31,8 +32,8 @@ function TapForBPM() {
 	} else {
 		bpmAvg = 60000 * count / (msecs - msecsFirst);
 		$("#Tavg").val(Math.round(bpmAvg));
-		if (((Math.abs(Math.round(bpmAvg) - actualBPM)) > 15)&&(noDoing)) {
-			
+		if (((Math.abs(Math.round(bpmAvg) - lastBPM)) > 15)&&(noDoing)) {
+			lastBPM=Math.round(bpmAvg);
 			actualBPM = Math.round(bpmAvg);
 			getNewSong();
 		} else {
@@ -49,7 +50,7 @@ function getNewSong() {
 noDoing=false;
 	minVal = actualBPM - 5;
 	maxVal = actualBPM + 5;
-	var url = 'http://musictechfest:mtflondon2012_@ella.bmat.ws/collections/tags/tags/electronic/similar/collections/bmat/tracks?filter=rhythm.bpm:['+minVal+'%20TO%20'+maxVal+']&similarity_type=playlist&format=json&limit=1';
+	var url = 'http://musictechfest:mtflondon2012_@ella.bmat.ws/collections/tags/tags/electronic/similar/collections/bmat/tracks?filter=rhythm.bpm:['+minVal+'%20TO%20'+maxVal+']&similarity_type=playlist&format=json&limit=1&fetch_metadata=location,artist,track';
 	$.ajax({
 		url : url,
 		dataType : 'json',
@@ -66,9 +67,11 @@ function playMusic(data) {
 	noDoing=true;
 	
 	alert(JSON.stringify(data));
+	console.log(JSON.stringify(data));
 	
 	
-	playAudio(myObject.results[0].entity.metada.location);
+	console.log(JSON.stringify(data.response.results[0].entity.metadata.location));
+	playAudio(data.response.results[0].entity.metadata.location);
 
 }
 var my_media = null;
@@ -79,4 +82,15 @@ function playAudio(src) {
 
 	// Play audio
 	my_media.play();
+}
+
+function onSuccess() {
+    console.log("playAudio():Audio correcto");
+}
+
+// Funci—n 'callback' onError
+//
+function onError(error) {
+    alert('c—digo: '  + error.code    + '\n' + 
+          'mensaje: ' + error.message + '\n');
 }
