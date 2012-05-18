@@ -48,8 +48,7 @@ function getNewSong() {
 
 	minVal = actualBPM - 5;
 	maxVal = actualBPM + 5;
-	var url = 'http://musictechfest:mtflondon2012_@ella.bmat.ws/collections/tags/tags/electronic/similar/collections/bmat/tracks?filter=rhythm.bpm:['
-			+ minVal + '%20TO%20' + maxVal + ']&format=json';
+	var url = 'http://musictechfest:mtflondon2012_@http://ella.bmat.ws/collections/tags/tags/electronic/similar/collections/bmat/tracks?filter=rhythm.bpm:['+minVal+'%20TO%20'+maxVal+']&similarity_type=playlist&format=json&limit=1';
 	$.ajax({
 		url : url,
 		dataType : 'json',
@@ -63,9 +62,11 @@ function getNewSong() {
 }
 
 function playMusic(data) {
+	alert(data);
+	alert(JSON.stringify(data));
 	
-	alert(data.result[0].entity.metada.location);
-	playAudio(myObject.result[0].entity.metada.location);
+	alert(data.results[0].entity.metada.location);
+	playAudio(myObject.results[0].entity.metada.location);
 
 }
 var my_media = null;
