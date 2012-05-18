@@ -68,10 +68,16 @@ function TapForBPM() {
 
 function getNewSong() {
     noDoing=false;
-	minVal = actualBPM - 10;
-	maxVal = actualBPM + 10;
+	minVal = actualBPM - 5;
+	maxVal = actualBPM + 5;
+    speed = "";
+    if (actualBPM > 120) {
+        speed = "%20AND%20speed:fast%20AND%20mood:party";
+    } else if (actialBPM < 80) { 
+        speed = "%20AND%20speed:slow%20AND%20mood:relaxed";
+    }
     style = $('#s_style').val();
-	var url = 'http://musictechfest:mtflondon2012_@ella.bmat.ws/collections/tags/tags/'+ style +'/similar/collections/bmat/tracks?filter=rhythm.bpm:['+minVal+'%20TO%20'+maxVal+']%20AND%20track_genre='+style+'&similarity_type=playlist&format=json&limit=1&fetch_metadata=location,artist,track';
+	var url = 'http://musictechfest:mtflondon2012_@ella.bmat.ws/collections/tags/tags/'+ style +'/similar/collections/bmat/tracks?filter=rhythm.bpm:['+minVal+'%20TO%20'+maxVal+']'+speed+'AND%20rhythm.complexity:simple&similarity_type=playlist_bpm&format=json&limit=1&fetch_metadata=location,artist,track';
 	$.ajax({
 		url : url,
 		dataType : 'json',
