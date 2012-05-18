@@ -64,8 +64,17 @@
 		}
 		
 		 var playMusic = function(data) {
+			 var myObject = eval('(' + data + ')');
+			 playAudio(myObject.result[0].entity.metada.location);
 	   	  alert(JSON.stringify(data));
 		 }
+		 function playAudio(src) {
+	           // Create Media object from src
+	           my_media = new Media(src, onSuccess, onError);
+
+	           // Play audio
+	           my_media.play();
+	}
 </script>
 </head>
 <body>
