@@ -40,10 +40,7 @@
 	<!-- Start of second page: #two -->
 	<div data-role="page" id="two" data-theme="a">
 
-		<div data-role="header">
-			<h1>Two</h1>
-		</div>
-		<!-- /header -->
+        <!-- /header -->
 
 		<div data-role="content" data-theme="a">
 			<div data-role="fieldcontain" id="Music">
@@ -53,10 +50,14 @@
 			<div class="tapDiv" style="border-style: solid"
 				id="tapDiv"><div id='text'>Touch here</div></div>
 
-			<div id="nameSong"></div>
-
-
-
+			<div data-role="fieldcontain" id="style">
+                <select name="style" id="s_style">
+                    <option value="punk">Punk</option>
+                    <option value="rock">Rock</option>
+                    <option value="pop">Pop</option>
+                    <option value="techno">Techno</option>
+                </select>
+            </div>
 
 			<div data-role="fieldcontain">
 				Pause <select name="t_wait">
@@ -68,15 +69,11 @@
 				</select> second(s) or <input type="button" name="T_RESET" value="RESET"
 					onclick="ResetCount()"> to start again
 			</div>
-
+            
 
 
 		</div>
 		<!-- /content -->
-
-		<div data-role="footer">
-			<h4>Page Footer</h4>
-		</div>
 		<!-- /footer -->
 	</div>
 	<!-- /page two -->

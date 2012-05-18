@@ -17,8 +17,10 @@ function ResetCount() {
 	$("#T_RESET").blur();
     if (my_media != null) {
         my_media.stop()
+        my_media.release();
     }
-    $("Tavg").toogle(false);
+    $("#Music").hide();
+    noDoing = true;
 }
 
 function TapForBPM() {
@@ -37,7 +39,6 @@ function TapForBPM() {
 		count = 1;
 	} else {
 		bpmAvg = 60000 * count / (msecs - msecsFirst);
-		$("#text").html("BPMs: " + Math.round(bpmAvg));
 		if (((Math.abs(Math.round(bpmAvg) - lastBPM)) > 15)&&(noDoing)) {
 			now=Math.round(bpmAvg);
 			if(now>200){
@@ -47,6 +48,7 @@ function TapForBPM() {
 				now=40;
 			}
 			lastBPM=now;
+            $("#text").html("BPMs: " + Math.round(lastBPM));
 			actualBPM = now;
 			getNewSong();
 		} else {now=Math.round(bpmAvg);
@@ -65,10 +67,11 @@ function TapForBPM() {
 }
 
 function getNewSong() {
-noDoing=false;
-	minVal = actualBPM - 5;
-	maxVal = actualBPM + 5;
-	var url = 'http://musictechfest:mtflondon2012_@ella.bmat.ws/collections/tags/tags/electronic/similar/collections/bmat/tracks?filter=rhythm.bpm:['+minVal+'%20TO%20'+maxVal+']&similarity_type=playlist&format=json&limit=1&fetch_metadata=location,artist,track';
+    noDoing=false;
+	minVal = actualBPM - 10;
+	maxVal = actualBPM + 10;
+    style = $('#s_style').val();
+	var url = 'http://musictechfest:mtflondon2012_@ella.bmat.ws/collections/tags/tags/'+ style +'/similar/collections/bmat/tracks?filter=rhythm.bpm:['+minVal+'%20TO%20'+maxVal+']%20AND%20track_genre='+style+'&similarity_type=playlist&format=json&limit=1&fetch_metadata=location,artist,track';
 	$.ajax({
 		url : url,
 		dataType : 'json',
@@ -82,31 +85,30 @@ noDoing=false;
 }
 
 function playMusic(data) {
-	noDoing=true;
 	console.log(JSON.stringify(data));
 	
-	$("#Music").toggle('fast');
+	$("#Music").show('fast');
     $("#Tavg").val(data.response.results[0].entity.metadata.track + " by " + data.response.results[0].entity.metadata.artist);
 	console.log(JSON.stringify(data.response.results[0].entity.metadata.location));
 	playAudio(data.response.results[0].entity.metadata.location);
-
 }
 
 function playAudio(src) {
 	// Create Media object from src
 	if(my_media != null){
 		my_media.stop();
-	}else{
+        my_media.release();
+	}
 	
 	my_media = new Media(src, onSuccess, onError);
 
 	// Play audio
 	my_media.play();
-	}
 }
 
 function onSuccess() {
     console.log("playAudio():Audio correcto");
+    noDoing = true;
 }
 
 // Funci—n 'callback' onError
