@@ -20,8 +20,11 @@
 			<h2>Click on the button to start shakin'</h2>
 
 			<p>
-				<a href="#two" data-role="button">Start</a>
+				<a href="#two" data-role="button">Tap to beat!</a>
 			</p>
+            <p>
+                <a href="#three" data-role="button">Shake to beat!</a>
+            </p>
 		</div>
 		<!-- /content -->
 
@@ -48,9 +51,16 @@
 		<!-- /footer -->
 	</div>
 	<!-- /page two -->
-
-
-
+    
+    <div data-role="page" id="three" data-theme="a">
+        <div data-role="content" data-theme="a" id="shakeit">
+			<div id='BPM'><h1>Beat!</h1></div>
+            <div data-role="fieldcontain" id="Music">
+            <label for="name">Playing:</label> <input type="text" name="name"
+                id="Tavg" value="" />
+			</div>
+		</div>
+    </div>
 
 </body>
 </html>

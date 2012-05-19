@@ -21,7 +21,7 @@ function TapForBPM() {
             console.log("Don't update");
             return true;
         }
-        if ((msecs - msecsPrevious) > 1000) {
+        if ((msecs - msecsPrevious) > 2000) {
             count = 0;
         }
         if (count == 0) {
@@ -29,7 +29,7 @@ function TapForBPM() {
             count = 1;
             lastcheck = msecs;
         } else {
-            bpmAvg = 30000 * count / (msecs - msecsFirst);
+            bpmAvg = 60000 * count / (msecs - msecsFirst);
             actualBPM = Math.round(bpmAvg);
             $("#BPM").html("<h1>" + actualBPM + "</h1> <span class='small'>BPM</span>");
             if((msecs - lastcheck) > 5000)
