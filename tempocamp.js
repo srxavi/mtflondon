@@ -31,6 +31,7 @@ function StopShake() {
 		clearInterval(musicID);
 	if (my_media) {
 		my_media.stop();
+		my_media.release();
 		my_media = null;
 	}
 	$("#BPM2").html("<h1>Beat!</h1>");
@@ -188,10 +189,11 @@ function onStatus(data) {
 }
 
 function onSuccess() {
+	my_media.release();
 	my_media = null;
 }
 
-// Funci—n 'callback' onError
+// Function 'callback' onError
 //
 function onError(error) {
     alert('c—digo: '  + error.code    + '\n' + 
