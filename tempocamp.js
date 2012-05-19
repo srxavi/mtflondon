@@ -1,83 +1,68 @@
 var count = 0;
 var msecsFirst = 0;
 var msecsPrevious = 0;
+var lastcheck = 0;
 var actualBPM = 0;
 var lastBPM=0;
-var noDoing= true;
 var my_media = null;
+var wait = false;
 
 $("#tapDiv").live("tap", function(event) {
 	TapForBPM();
 });
 
-function ResetCount() {
-	count = 0;
-	$("#Tavg").val("");
-	//document.TAP_DISPLAY.T_TAP.value = "";
-	$("#T_RESET").blur();
-    if (my_media != null) {
-        my_media.stop()
-        my_media.release();
-    }
-    $("#Music").hide();
-    noDoing = true;
-}
-
 function TapForBPM() {
-
-	$("#t_wait").blur();
 	timeSeconds = new Date;
-	msecs = timeSeconds.getTime();
-	if ((msecs - msecsPrevious) > 1000 * $("#t_wait").value) {
-		count = 0;
-	}
-
-	if (count == 0) {
-		$("#Tavg").val("First Beat");
-		//document.TAP_DISPLAY.T_TAP.value = "First Beat";
-		msecsFirst = msecs;
-		count = 1;
-	} else {
-		bpmAvg = 60000 * count / (msecs - msecsFirst);
-		if (((Math.abs(Math.round(bpmAvg) - lastBPM)) > 15)&&(noDoing)) {
-			now=Math.round(bpmAvg);
-			if(now>200){
-				now=200;
-			}
-			if(now<40){
-				now=40;
-			}
-			lastBPM=now;
-            $("#text").html("BPMs: " + Math.round(lastBPM));
-			actualBPM = now;
-			getNewSong();
-		} else {now=Math.round(bpmAvg);
-		if(now>200){
-			now=200;
-		}
-		if(now<40){
-			now=40;
-		}
-		}
-		count++;
+    if(!wait) {
+        msecs = timeSeconds.getTime();
+        console.log('SECONDS: '+msecs);
+        if ((msecs - msecsPrevious) < 120)
+        {
+            console.log("Don't update");
+            return true;
+        }
+        if ((msecs - msecsPrevious) > 1000) {
+            count = 0;
+        }
+        if (count == 0) {
+            msecsFirst = msecs;
+            count = 1;
+            lastcheck = msecs;
+        } else {
+            bpmAvg = 30000 * count / (msecs - msecsFirst);
+            actualBPM = Math.round(bpmAvg);
+            $("#BPM").html("<h1>" + actualBPM + "</h1> <span class='small'>BPM</span>");
+            if((msecs - lastcheck) > 5000)
+            {
+                console.log('new Song!');
+                getNewSong();
+                lastcheck = msecs;
+            }
+            count++;
 		//document.TAP_DISPLAY.T_TAP.value = count;
-	}
-	msecsPrevious = msecs;
+        }
+        msecsPrevious = msecs;
+    }
 	return true;
 }
 
 function getNewSong() {
-    noDoing=false;
-	minVal = actualBPM - 5;
-	maxVal = actualBPM + 5;
-    speed = "";
-    if (actualBPM > 120) {
-        speed = "%20AND%20speed:fast%20AND%20mood:party";
-    } else if (actialBPM < 80) { 
-        speed = "%20AND%20speed:slow%20AND%20mood:relaxed";
+    wait = true;
+    tempo = actualBPM;
+    if (tempo > 200)
+        tempo = 200;
+    else if (tempo < 40)
+        tempo = 40; 
+	minVal = tempo - 5;
+	maxVal = tempo + 5;
+    speed = "%20AND%20!sound:speech";
+    if (tempo > 120) {
+        speed += "%20AND%20speed:fast%20AND%20mood:party";
+    } else if (tempo < 80) { 
+        speed += "%20AND%20speed:slow%20AND%20mood:relaxed";
     }
-    style = $('#s_style').val();
-	var url = 'http://musictechfest:mtflondon2012_@ella.bmat.ws/collections/tags/tags/'+ style +'/similar/collections/bmat/tracks?filter=rhythm.bpm:['+minVal+'%20TO%20'+maxVal+']'+speed+'AND%20rhythm.complexity:simple&similarity_type=playlist_bpm&format=json&limit=1&fetch_metadata=location,artist,track';
+	var url = 'http://musictechfest:mtflondon2012_@ella.bmat.ws/collections/bmat/artists/b1f09a29-6b65-4492-9495-ce7469b9b6d3/similar/collections/bmat/tracks?filter=rhythm.bpm:['+minVal+'%20TO%20'+maxVal+']'+speed+'AND%20rhythm.complexity:simple&similarity_type=playlist_bpm&format=json&limit=1&fetch_metadata=location,artist,track';
+    console.log(url);
 	$.ajax({
 		url : url,
 		dataType : 'json',
@@ -105,16 +90,16 @@ function playAudio(src) {
 		my_media.stop();
         my_media.release();
 	}
-	
-	my_media = new Media(src, onSuccess, onError);
-
+	my_media = new Media(src, onSuccess, onError, onStatus);
 	// Play audio
+    wait = false;
 	my_media.play();
 }
 
+function onStatus(data) {
+}
+
 function onSuccess() {
-    console.log("playAudio():Audio correcto");
-    noDoing = true;
 }
 
 // Funci—n 'callback' onError

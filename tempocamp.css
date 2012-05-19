@@ -12,3 +12,19 @@
     vertical-align: middle;
     text-align: center;
 }
+
+#BPM {
+    text-align: center;
+    margin: 10px;
+}
+
+#BPM h1 {
+    display: inline;
+    font-size: 400%;
+    text-align: center;
+}
+
+span.small {
+    diplay: inline;
+    font-size: medium;
+}

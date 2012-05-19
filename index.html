@@ -14,14 +14,10 @@
 
 	<!-- Start of first page: #one -->
 	<div data-role="page" id="one">
-
-		<div data-role="header">
-			<h1>APP</h1>
-		</div>
 		<!-- /header -->
 
 		<div data-role="content">
-			<h2>One</h2>
+			<h2>Click on the button to start shakin'</h2>
 
 			<p>
 				<a href="#two" data-role="button">Start</a>
@@ -29,10 +25,6 @@
 		</div>
 		<!-- /content -->
 
-		<div data-role="footer" data-theme="d">
-			<h4>Page Footer</h4>
-		</div>
-		<!-- /footer -->
 	</div>
 	<!-- /page one -->
 
@@ -43,35 +35,14 @@
         <!-- /header -->
 
 		<div data-role="content" data-theme="a">
-			<div data-role="fieldcontain" id="Music">
-				<label for="name">Playing:</label> <input type="text" name="name"
-					id="Tavg" value="" />
-			</div>
-			<div class="tapDiv" style="border-style: solid"
-				id="tapDiv"><div id='text'>Touch here</div></div>
-
-			<div data-role="fieldcontain" id="style">
-                <select name="style" id="s_style">
-                    <option value="punk">Punk</option>
-                    <option value="rock">Rock</option>
-                    <option value="pop">Pop</option>
-                    <option value="techno">Techno</option>
-                </select>
+			<div id='BPM'><h1>Beat!</h1></div>
+            <div class="tapDiv" style="border-style: solid"
+				id="tapDiv"><div id='text'>Touch here</div>
             </div>
-
-			<div data-role="fieldcontain">
-				Pause <select name="t_wait">
-					<option value="1">1</option>
-					<option value="2" SELECTED>2</option>
-					<option value="3">3</option>
-					<option value="4">4</option>
-					<option value="5">5</option>
-				</select> second(s) or <input type="button" name="T_RESET" value="RESET"
-					onclick="ResetCount()"> to start again
+            <div data-role="fieldcontain" id="Music">
+				<label for="name">Playing:</label> <input type="text" name="name"
+                id="Tavg" value="" />
 			</div>
-            
-
-
 		</div>
 		<!-- /content -->
 		<!-- /footer -->
