@@ -54,10 +54,14 @@
     
     <div data-role="page" id="three" data-theme="a">
         <div data-role="content" data-theme="a" id="shakeit">
-			<div id='BPM'><h1>Beat!</h1></div>
-            <div data-role="fieldcontain" id="Music">
+			<div id='BPM2'><h1>Beat!</h1></div>
+			<div data-role="filedcontain">
+				<p data-role="button" onClick="ResetShake()">Start Shake to beat!</p>
+			</div>
+            <div data-role="fieldcontain" id="Music2">
             <label for="name">Playing:</label> <input type="text" name="name"
-                id="Tavg" value="" />
+                id="Tavg2" value="" />
+                <p data-role="button" onClick="StopShake()">Stop</p>
 			</div>
 		</div>
     </div>

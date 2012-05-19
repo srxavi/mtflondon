@@ -2,13 +2,22 @@
     display: none;
 }
 
+#Music2 {
+    display: none;
+}
+
+#pos {
+}
+
 #tapDiv {
     height: 150px;
     border-radius: 75px;
+    display: table;
+    width: 100%;
 }
 
 #text {
-    height: 150px;
+    display: table-cell;
     vertical-align: middle;
     text-align: center;
 }
@@ -19,6 +28,17 @@
 }
 
 #BPM h1 {
+    display: inline;
+    font-size: 400%;
+    text-align: center;
+}
+
+#BPM2 {
+    text-align: center;
+    margin: 10px;
+}
+
+#BPM2 h1 {
     display: inline;
     font-size: 400%;
     text-align: center;

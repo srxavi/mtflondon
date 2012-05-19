@@ -6,10 +6,63 @@ var actualBPM = 0;
 var lastBPM=0;
 var my_media = null;
 var wait = false;
+var watchID = null;
+var musicID = null;
+var lastacc = 0;
+var beat = 0;
+var time = 0;
 
 $("#tapDiv").live("tap", function(event) {
 	TapForBPM();
 });
+
+function ShakeForBPM() {
+	console.log("Entering shake for BPM");
+	watchID = navigator.accelerometer.watchAcceleration(accelerometerSuccess,
+            	accelerometerError,
+            	{frequency: 50});
+	musicID = setInterval(function (){
+		getNewSongforShake();
+	}, 3500);
+}
+
+function StopShake() {
+	if (musicID)
+		clearInterval(musicID);
+	if (my_media) {
+		my_media.stop();
+		my_media = null;
+	}
+	$("#BPM2").html("<h1>Beat!</h1>");
+	beat = 0;
+	time = 0;
+	$('#Music2').hide();
+}
+
+function ResetShake() {
+	StopShake();
+	ShakeForBPM();
+}
+
+function accelerometerSuccess(acceleration) {
+	if (((acceleration.x < 0) && (lastacc > 0)) || ((acceleration.x > 0 ) && (lastacc < 0))){
+		beat++;
+	}
+	time++
+	if (time >= 20) {
+		time = 0;
+		if (beat > 2) {
+			actualBPM += beat;
+		}
+		console.log('BEATS: ' + beat);
+		beat = 0;
+	}
+	lastacc = acceleration.x;
+}
+
+function accelerometerError() 
+{
+}
 
 function TapForBPM() {
 	timeSeconds = new Date;
@@ -46,6 +99,41 @@ function TapForBPM() {
 	return true;
 }
 
+function getNewSongforShake() {
+    wait = true;
+    clearInterval(musicID);
+	navigator.accelerometer.clearWatch(watchID);
+    tempo = actualBPM*4;
+    console.log('TEMPO '+ tempo);
+    if (tempo > 200)
+        tempo = 200;
+    else if (tempo < 40) {
+    	tempo = 40;
+    } 
+    $("#BPM2").html("<h1>" + tempo + "</h1> <span class='small'>BPM</span>");
+    speed = "genre:electronic";
+    if (tempo > 100) {
+        speed += "%20AND%20speed:fast%20AND%20mood:party";
+    } else if (tempo < 80) { 
+        speed += "%20AND%20speed:slow%20AND%20mood:relaxed";
+    }
+    rnd = randomnumber=Math.floor(Math.random()*20);
+	var url = 'http://musictechfest:mtflondon2012_@ella.bmat.ws/collections/bmat/tracks/search?q='+speed+'&offset='+ rnd +'&limit=1&fetch_metadata=location,artist,track';
+    console.log(url);
+	$.ajax({
+		url : url,
+		dataType : 'json',
+		type : 'GET',
+		success : function(data) {
+			$("#Music2").show('fast');
+		    $("#Tavg2").val(data.response.results[0].entity.metadata.track + " by " + data.response.results[0].entity.metadata.artist);
+			playMusic(data);
+		}
+	});
+	actualBPM=0;
+	
+}
+
 function getNewSong() {
     wait = true;
     tempo = actualBPM;
@@ -68,7 +156,8 @@ function getNewSong() {
 		dataType : 'json',
 		type : 'GET',
 		success : function(data) {
-		
+			$("#Music").show('fast');
+		    $("#Tavg").val(data.response.results[0].entity.metadata.track + " by " + data.response.results[0].entity.metadata.artist);
 			playMusic(data);
 		}
 	});
@@ -77,9 +166,6 @@ function getNewSong() {
 
 function playMusic(data) {
 	console.log(JSON.stringify(data));
-	
-	$("#Music").show('fast');
-    $("#Tavg").val(data.response.results[0].entity.metadata.track + " by " + data.response.results[0].entity.metadata.artist);
 	console.log(JSON.stringify(data.response.results[0].entity.metadata.location));
 	playAudio(data.response.results[0].entity.metadata.location);
 }
@@ -100,6 +186,7 @@ function onStatus(data) {
 }
 
 function onSuccess() {
+	my_media = null;
 }
 
 // Funci—n 'callback' onError
