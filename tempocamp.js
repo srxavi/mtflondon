@@ -37,6 +37,7 @@ function StopShake() {
 	beat = 0;
 	time = 0;
 	$('#Music2').hide();
+	$('#Music').hide();
 }
 
 function ResetShake() {
@@ -156,9 +157,10 @@ function getNewSong() {
 		dataType : 'json',
 		type : 'GET',
 		success : function(data) {
+			StopShake();
 			$("#Music").show('fast');
 		    $("#Tavg").val(data.response.results[0].entity.metadata.track + " by " + data.response.results[0].entity.metadata.artist);
-			playMusic(data);
+		    playMusic(data);
 		}
 	});
 
